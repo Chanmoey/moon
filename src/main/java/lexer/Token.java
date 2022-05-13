@@ -22,6 +22,10 @@ public class Token {
         return this.type;
     }
 
+    public String getValue() {
+        return this.value;
+    }
+
     public boolean isVariable() {
         return this.type == TokenType.VARIABLE;
     }
@@ -43,8 +47,8 @@ public class Token {
             } else {
                 break;
             }
+            iterator.next();
         }
-        iterator.next();
 
         String s = sb.toString();
         if (KeyWords.isKeyword(s)) {
