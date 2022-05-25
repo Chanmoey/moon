@@ -1,6 +1,7 @@
 package lexer;
 
 import common.AlphabetHelper;
+import common.Constants;
 import common.PeekIterator;
 
 import java.util.ArrayList;
@@ -30,6 +31,27 @@ public class Lexer {
                 continue;
             }
 
+            // 删除注释
+            if (c == '/') {
+                if (lookahead == '/') {
+                    while (iterator.hasNext() && (c = iterator.next()) != '\n');
+                } else if (lookahead == '*') {
+                    boolean close = false;
+                    while (iterator.hasNext()) {
+                        char p = iterator.next();
+                        if (p == '*' && iterator.peek() == '/') {
+                            iterator.next();
+                            close = true;
+                            break;
+                        }
+                    }
+                    if (!close) {
+                        throw new LexicalException(Constants.COMMENTS_NOT_MATCH);
+                    }
+                    continue;
+                }
+            }
+
             if (c == '{' || c == '}' || c == '(' || c == ')') {
                 tokenList.add(new Token(TokenType.BRACKET, String.valueOf(c)));
                 continue;
@@ -57,7 +79,7 @@ public class Lexer {
             if ((c == '+' || c == '-' || c == '.') && AlphabetHelper.isNumber(lookahead)) {
                 Token lastToken = tokenList.isEmpty() ? null : tokenList.get(tokenList.size() - 1);
 
-                if (lastToken == null || lastToken.isNumber() || lastToken.isOperator()) {
+                if (lastToken == null || !lastToken.isNumber() || lastToken.isOperator()) {
                     iterator.pushBack();
                     tokenList.add(Token.makeNumber(iterator));
                     continue;
