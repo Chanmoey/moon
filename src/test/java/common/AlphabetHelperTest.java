@@ -8,10 +8,10 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Chanmoey
  * @date 2022年05月13日
  */
-public class AlphabetHelperTest {
+class AlphabetHelperTest {
 
     @Test
-    public void test() {
+    void test() {
         // letter
         assertTrue(AlphabetHelper.isLetter('a'));
         assertFalse(AlphabetHelper.isLetter('*'));
@@ -34,5 +34,8 @@ public class AlphabetHelperTest {
         assertTrue(AlphabetHelper.isOperator('/'));
         assertTrue(AlphabetHelper.isOperator('&'));
         assertFalse(AlphabetHelper.isOperator('a'));
+        assertTrue(AlphabetHelper.isOperator('%'));
+        assertTrue(AlphabetHelper.isOperator('^'));
+        assertTrue(AlphabetHelper.isOperator(','));
     }
 }
