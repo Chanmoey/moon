@@ -8,13 +8,15 @@ import java.util.regex.Pattern;
  */
 public class AlphabetHelper {
 
-    private static final Pattern LETTER = Pattern.compile("^[a-zA-z]$");
+    private AlphabetHelper(){}
+
+    private static final Pattern LETTER = Pattern.compile("^[a-zA-Z]$");
 
     private static final Pattern NUMBER = Pattern.compile("^\\d$");
 
-    private static final Pattern LITERAL = Pattern.compile("^[_a-zA-z\\d]$");
+    private static final Pattern LITERAL = Pattern.compile("^\\w$");
 
-    private static final Pattern OPERATOR = Pattern.compile("^[+-\\\\*<>=!&|^%/]$");
+    private static final Pattern OPERATOR = Pattern.compile("^[,;+\\-\\\\*<>=!&|^%/]$");
 
     public static boolean isLetter(char c) {
         return LETTER.matcher(String.valueOf(c)).matches();
