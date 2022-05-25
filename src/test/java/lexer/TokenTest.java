@@ -1,5 +1,6 @@
-package common;
+package lexer;
 
+import common.PeekIterator;
 import lexer.LexicalException;
 import lexer.Token;
 import lexer.TokenType;
