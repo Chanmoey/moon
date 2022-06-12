@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class PriorityTable {
 
-    private List<List<String>> table = new ArrayList<>();
+    private final List<List<String>> table = new ArrayList<>();
 
     public PriorityTable() {
         table.add(Arrays.asList("&", "|", "^"));
