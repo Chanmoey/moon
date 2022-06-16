@@ -24,4 +24,25 @@ public abstract class Factor extends ASTNode{
         this.label = token.getValue();
         this.lexeme = token;
     }
+
+    protected Factor(ASTNode parent, Token token) {
+        super(parent);
+        this.lexeme = token;
+        this.label = token.getValue();
+    }
+
+    public static ASTNode parse(ASTNode parent, PeekTokenIterator iterator) {
+        var token = iterator.peek();
+        var type = token.getType();
+
+        if (type == TokenType.VARIABLE) {
+            iterator.next();
+            return new Variable(parent, token);
+        } else if (token.isScalar()) {
+            iterator.next();
+            return new Scalar(parent, token);
+        }
+
+        return null;
+    }
 }
