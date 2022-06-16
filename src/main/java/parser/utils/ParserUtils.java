@@ -1,7 +1,11 @@
 package parser.utils;
 
 import org.apache.commons.lang3.NotImplementedException;
+import org.apache.commons.lang3.StringUtils;
 import parser.ast.ASTNode;
+import parser.ast.Factor;
+
+import java.util.ArrayList;
 
 /**
  * @author Chanmoey
@@ -10,23 +14,21 @@ import parser.ast.ASTNode;
 public class ParserUtils {
 
     public static String toPostfixExpression(ASTNode node) {
-        String leftStr;
-        String rightStr;
 
-        switch (node.getType()) {
-            case BINARY_EXPR: {
-                leftStr = toPostfixExpression(node.getChild(0));
-                rightStr = toPostfixExpression(node.getChild(1));
-                return leftStr + " " + rightStr + " " + node.getLexeme().getValue();
-            }
+        if (node instanceof Factor) {
+            return node.getLexeme().getValue();
+        }
 
-            case VARIABLE:
-            case SCALAR: {
-                return node.getLexeme().getValue();
-            }
+        var prts = new ArrayList<String>();
+        for (var child : node.getChildren()) {
+            prts.add(toPostfixExpression(child));
+        }
 
-            default:
-                throw new NotImplementedException("Not this Expression.");
+        var lexemeStr = node.getLexeme() != null ? node.getLexeme().getValue() : "";
+        if (lexemeStr.length() > 0) {
+            return StringUtils.join(prts, " ") + " " + lexemeStr;
+        } else {
+            return StringUtils.join(prts, " ");
         }
     }
 }
