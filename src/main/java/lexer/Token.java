@@ -37,6 +37,14 @@ public class Token {
                 || this.type == TokenType.BOOLEAN;
     }
 
+    public boolean isType() {
+        return "bool".equals(this.value)
+                || "int".equals(this.value)
+                || "float".equals(this.value)
+                || "void".equals(this.value)
+                || "string".equals(this.value);
+    }
+
     public static Token makeVarOrKeyword(PeekIterator<Character> iterator) {
         StringBuilder sb = new StringBuilder();
 
