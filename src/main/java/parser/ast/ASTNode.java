@@ -34,6 +34,11 @@ public abstract class ASTNode {
         this.parent = parent;
     }
 
+    protected ASTNode(ASTNodeTypes type, String label) {
+        this.type = type;
+        this.label = label;
+    }
+
     protected ASTNode(ASTNode parent, ASTNodeTypes type, String label) {
         this.parent = parent;
         this.type = type;
