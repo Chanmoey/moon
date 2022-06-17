@@ -130,6 +130,10 @@ public class Expr extends ASTNode {
     public static ASTNode parse(PeekTokenIterator tokenIt) throws ParseException {
         return E(null, 0, tokenIt);
     }
+
+    public static ASTNode parse(ASTNode parent, PeekTokenIterator tokenIt) throws ParseException {
+        return E(parent, 0, tokenIt);
+    }
 }
 
 
