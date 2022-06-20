@@ -6,6 +6,6 @@ package parser.ast;
  */
 public class DefStmt extends Stmt{
     protected DefStmt(ASTNode parent) {
-        super(parent, ASTNodeTypes.DEF_STMT, "def");
+        super(ASTNodeTypes.DEF_STMT, "def");
     }
 }

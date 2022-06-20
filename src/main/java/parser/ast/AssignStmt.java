@@ -13,19 +13,19 @@ public class AssignStmt extends Stmt {
         super(ASTNodeTypes.ASSIGN_STMT, "assign");
     }
 
-    public static ASTNode parse(PeekTokenIterator iterator) throws ParseException {
+    public static ASTNode parse(PeekTokenIterator it) throws ParseException {
         var stmt = new AssignStmt();
-        var tkn = iterator.peek();
-        var factor = Factor.parse(null, iterator);
+        var tkn = it.peek();
+        var factor = Factor.parse(it);
         if (factor == null) {
             throw new ParseException(tkn);
         }
-
         stmt.addChild(factor);
-        var lexeme = iterator.nextMatch("=");
-        var expr = Expr.parse(iterator);
+        var lexeme = it.nextMatch("=");
+        var expr = Expr.parse(it);
         stmt.addChild(expr);
         stmt.setLexeme(lexeme);
         return stmt;
+
     }
 }

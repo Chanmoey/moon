@@ -8,23 +8,23 @@ import parser.utils.PeekTokenIterator;
  * @date 2022年06月17日
  */
 public class FunctionArgs extends ASTNode {
-    protected FunctionArgs(ASTNode parent) {
-        super(parent);
+    public FunctionArgs() {
+        super();
         this.label = "args";
     }
 
-    public static ASTNode parse(ASTNode parent, PeekTokenIterator iterator) throws ParseException {
+    public static ASTNode parse(PeekTokenIterator it) throws ParseException {
 
-        var args = new FunctionArgs(parent);
+        var args = new FunctionArgs();
 
-        while (iterator.peek().isType()) {
-            var type = iterator.next();
-            var variable = (Variable) Factor.parse(parent, iterator);
+        while (it.peek().isType()) {
+            var type = it.next();
+            var variable = (Variable) Factor.parse(it);
             variable.setTypeLexeme(type);
             args.addChild(variable);
 
-            if (!")".equals(iterator.peek().getValue())) {
-                iterator.nextMatch(",");
+            if (!it.peek().getValue().equals(")")) {
+                it.nextMatch(",");
             }
         }
 

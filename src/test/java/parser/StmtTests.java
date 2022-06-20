@@ -19,8 +19,8 @@ class StmtTests {
     @Test
     void declare() throws ParseException, LexicalException {
         var it = createTokenIt("moon i = 100 * 2");
-        var stmt = DeclareStmt.parse(null, it);
-        assertEquals(ParserUtils.toPostfixExpression(stmt), "i 100 2 * =");
+        var stmt = DeclareStmt.parse(it);
+        assertEquals("i 100 2 * =", ParserUtils.toPostfixExpression(stmt));
         System.out.println(stmt.print(stmt));
     }
 
@@ -31,7 +31,7 @@ class StmtTests {
                 "}"
         );
 
-        var stmt = (IfStmt) IfStmt.parse(null, it);
+        var stmt = (IfStmt) IfStmt.parse(it);
         var expr = (Variable) stmt.getChild(0);
         var block = (Block) stmt.getChild(1);
         var assignStmt = (AssignStmt) block.getChild(0);
@@ -50,7 +50,7 @@ class StmtTests {
                 "}"
         );
 
-        var stmt = (IfStmt) IfStmt.parse(null, it);
+        var stmt = (IfStmt) IfStmt.parse(it);
         var expr = (Variable) stmt.getChild(0);
         var block = (Block) stmt.getChild(1);
         var assignStmt = (AssignStmt) block.getChild(0);

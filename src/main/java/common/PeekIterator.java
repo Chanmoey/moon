@@ -28,34 +28,39 @@ public class PeekIterator<T> implements Iterator<T> {
         this.endToken = endToken;
     }
 
+    public PeekIterator(Iterator<T> iterator, T endToken) {
+        this.it = iterator;
+        this.endToken = endToken;
+    }
+
     public T peek() {
-        if (this.stackPutBack.size() > 0) {
+        if (!this.stackPutBack.isEmpty()) {
             return this.stackPutBack.getFirst();
         }
         if (!it.hasNext()) {
             return this.endToken;
         }
         T value = this.next();
-        this.pushBack();
+        this.putBack();
         return value;
     }
 
-    public void pushBack() {
-        if (this.queueCache.size() > 0) {
+    public void putBack() {
+        if (!this.queueCache.isEmpty()) {
             this.stackPutBack.push(this.queueCache.pollLast());
         }
     }
 
     @Override
     public boolean hasNext() {
-        return this.endToken != null || this.stackPutBack.size() > 0 || this.it.hasNext();
+        return this.endToken != null || !this.stackPutBack.isEmpty() || this.it.hasNext();
     }
 
     @Override
     public T next() {
 
         T value;
-        if (this.stackPutBack.size() > 0) {
+        if (!this.stackPutBack.isEmpty()) {
             value = this.stackPutBack.pop();
         } else {
             if (!this.it.hasNext()) {

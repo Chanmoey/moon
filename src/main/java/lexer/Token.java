@@ -26,6 +26,10 @@ public class Token {
         return this.value;
     }
 
+    public boolean isValue() {
+        return isVariable() || isScalar();
+    }
+
     public boolean isVariable() {
         return this.type == TokenType.VARIABLE;
     }
@@ -161,7 +165,7 @@ public class Token {
                     } else if (lookahead == '=') {
                         return new Token(TokenType.OPERATOR, "+=");
                     } else {
-                        iterator.pushBack();
+                        iterator.putBack();
                         return new Token(TokenType.OPERATOR, "+");
                     }
                 case 2:
@@ -170,7 +174,7 @@ public class Token {
                     } else if (lookahead == '=') {
                         return new Token(TokenType.OPERATOR, "-=");
                     } else {
-                        iterator.pushBack();
+                        iterator.putBack();
                         return new Token(TokenType.OPERATOR, "-");
                     }
                 case 3:
@@ -179,7 +183,7 @@ public class Token {
                     } else if (lookahead == '=') {
                         return new Token(TokenType.OPERATOR, "*=");
                     } else {
-                        iterator.pushBack();
+                        iterator.putBack();
                         return new Token(TokenType.OPERATOR, "*");
                     }
                 case 4:
@@ -188,7 +192,7 @@ public class Token {
                     } else if (lookahead == '=') {
                         return new Token(TokenType.OPERATOR, "/=");
                     } else {
-                        iterator.pushBack();
+                        iterator.putBack();
                         return new Token(TokenType.OPERATOR, "/");
                     }
                 case 5:
@@ -197,7 +201,7 @@ public class Token {
                     } else if (lookahead == '=') {
                         return new Token(TokenType.OPERATOR, ">=");
                     } else {
-                        iterator.pushBack();
+                        iterator.putBack();
                         return new Token(TokenType.OPERATOR, ">");
                     }
                 case 6:
@@ -206,21 +210,21 @@ public class Token {
                     } else if (lookahead == '=') {
                         return new Token(TokenType.OPERATOR, "<=");
                     } else {
-                        iterator.pushBack();
+                        iterator.putBack();
                         return new Token(TokenType.OPERATOR, "<");
                     }
                 case 7:
                     if (lookahead == '=') {
                         return new Token(TokenType.OPERATOR, "==");
                     } else {
-                        iterator.pushBack();
+                        iterator.putBack();
                         return new Token(TokenType.OPERATOR, "=");
                     }
                 case 8:
                     if (lookahead == '=') {
                         return new Token(TokenType.OPERATOR, "!=");
                     } else {
-                        iterator.pushBack();
+                        iterator.putBack();
                         return new Token(TokenType.OPERATOR, "!");
                     }
                 case 9:
@@ -229,7 +233,7 @@ public class Token {
                     } else if (lookahead == '=') {
                         return new Token(TokenType.OPERATOR, "&=");
                     } else {
-                        iterator.pushBack();
+                        iterator.putBack();
                         return new Token(TokenType.OPERATOR, "&");
                     }
                 case 10:
@@ -238,7 +242,7 @@ public class Token {
                     } else if (lookahead == '=') {
                         return new Token(TokenType.OPERATOR, "|=");
                     } else {
-                        iterator.pushBack();
+                        iterator.putBack();
                         return new Token(TokenType.OPERATOR, "|");
                     }
                 case 11:
@@ -247,14 +251,14 @@ public class Token {
                     } else if (lookahead == '=') {
                         return new Token(TokenType.OPERATOR, "^=");
                     } else {
-                        iterator.pushBack();
+                        iterator.putBack();
                         return new Token(TokenType.OPERATOR, "^");
                     }
                 case 12:
                     if (lookahead == '=') {
                         return new Token(TokenType.OPERATOR, "%=");
                     } else {
-                        iterator.pushBack();
+                        iterator.putBack();
                         return new Token(TokenType.OPERATOR, "%");
                     }
                 default:

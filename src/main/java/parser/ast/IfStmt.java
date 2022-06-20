@@ -8,50 +8,74 @@ import parser.utils.PeekTokenIterator;
  * @date 2022年05月27日
  */
 public class IfStmt extends Stmt {
-    public IfStmt(ASTNode parent) {
-        super(parent, ASTNodeTypes.IF_STMT, "if");
+    public IfStmt() {
+        super(ASTNodeTypes.IF_STMT, "if");
     }
 
-    public static ASTNode parse(ASTNode parent, PeekTokenIterator iterator) throws ParseException {
-        return parseIf(parent, iterator);
+    public static ASTNode parse(PeekTokenIterator it) throws ParseException {
+        return parseIF(it);
     }
 
-    public static ASTNode parseIf(ASTNode parent, PeekTokenIterator iterator) throws ParseException {
-        var lexeme = iterator.nextMatch("if");
-        iterator.nextMatch("(");
-        var ifStmt = new IfStmt(parent);
+    // IfStmt -> If(Expr) Block Tail
+    public static ASTNode parseIF(PeekTokenIterator it) throws ParseException {
+        var lexeme = it.nextMatch("if");
+        it.nextMatch("(");
+        var ifStmt = new IfStmt();
         ifStmt.setLexeme(lexeme);
-        var expr = Expr.parse(parent, iterator);
+        var expr = Expr.parse(it);
         ifStmt.addChild(expr);
-        iterator.nextMatch(")");
-
-        var block = Block.parse(parent, iterator);
+        it.nextMatch(")");
+        var block = Block.parse(it);
         ifStmt.addChild(block);
 
-        var tail = parseTail(parent, iterator);
-
+        var tail = parseTail(it);
         if (tail != null) {
             ifStmt.addChild(tail);
         }
-
         return ifStmt;
+
     }
 
-    private static ASTNode parseTail(ASTNode parent, PeekTokenIterator iterator) throws ParseException {
-
-        if (!iterator.hasNext() || !"else".equals(iterator.peek().getValue())) {
+    // Tail -> else {Block} | else IFStmt | ε
+    public static ASTNode parseTail(PeekTokenIterator it) throws ParseException {
+        if (!it.hasNext() || !it.peek().getValue().equals("else")) {
             return null;
         }
-        iterator.nextMatch("else");
+        it.nextMatch("else");
+        var lookahead = it.peek();
 
-        var lookahead = iterator.peek();
-
-        if ("{".equals(lookahead.getValue())) {
-            return Block.parse(parent, iterator);
-        } else if ("if".equals(lookahead.getValue())) {
-            return parseIf(parent, iterator);
+        if (lookahead.getValue().equals("{")) {
+            return Block.parse(it);
+        } else if (lookahead.getValue().equals("if")) {
+            return parseIF(it);
         } else {
             return null;
         }
+
+    }
+
+    public ASTNode getExpr() {
+        return this.getChild(0);
+    }
+
+    public ASTNode getBlock() {
+        return this.getChild(1);
+    }
+
+    public ASTNode getElseBlock() {
+
+        var block = this.getChild(2);
+        if (block instanceof Block) {
+            return block;
+        }
+        return null;
+    }
+
+    public ASTNode getElseIfStmt() {
+        var ifStmt = this.getChild(2);
+        if (ifStmt instanceof IfStmt) {
+            return ifStmt;
+        }
+        return null;
     }
 }

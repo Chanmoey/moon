@@ -8,31 +8,33 @@ import parser.utils.PeekTokenIterator;
  * @date 2022年05月27日
  */
 public abstract class Stmt extends ASTNode {
-
-    protected Stmt(ASTNodeTypes types, String label) {
-        super(types, label);
+    public Stmt(ASTNodeTypes _type, String _label) {
+        super(_type, _label);
     }
 
-    protected Stmt(ASTNode parent, ASTNodeTypes type, String label) {
-        super(parent, type, label);
-    }
-
-    public static ASTNode parseStmt(ASTNode parent, PeekTokenIterator iterator) throws ParseException {
-
-        if (!iterator.hasNext()) {
+    public static ASTNode parseStmt(PeekTokenIterator it) throws ParseException {
+        if (!it.hasNext()) {
             return null;
         }
+        var token = it.next();
+        var lookahead = it.peek();
+        it.putBack();
 
-        var token = iterator.next();
-        var lookahead = iterator.peek();
-        iterator.pushBack();
-
-        if (token.isVariable() && lookahead != null && "=".equals(lookahead.getValue())) {
-            return AssignStmt.parse(iterator);
-        } else if ("var".equals(token.getValue())) {
-            return DeclareStmt.parse(parent, iterator);
+        if (token.isVariable() && lookahead != null && lookahead.getValue().equals("=")) {
+            return AssignStmt.parse(it);
+        } else if (token.getValue().equals("var")) {
+            return DeclareStmt.parse(it);
+        } else if (token.getValue().equals("func")) {
+            return FunctionDeclareStmt.parse(it);
+        } else if (token.getValue().equals("return")) {
+            return ReturnStmt.parse(it);
+        } else if (token.getValue().equals("if")) {
+            return IfStmt.parse(it);
+        } else if (token.getValue().equals("{")) {
+            return Block.parse(it);
+        } else {
+            return Expr.parse(it);
         }
 
-        return null;
     }
 }

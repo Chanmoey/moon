@@ -26,21 +26,18 @@ public abstract class ASTNode {
     /**
      * 其他信息
      */
+    // 词法单元
     protected Token lexeme;
+    // 标签（备注）
     protected String label;
+    // 类型
     protected ASTNodeTypes type;
 
-    protected ASTNode(ASTNode parent) {
-        this.parent = parent;
+    protected ASTNode() {
+
     }
 
     protected ASTNode(ASTNodeTypes type, String label) {
-        this.type = type;
-        this.label = label;
-    }
-
-    protected ASTNode(ASTNode parent, ASTNodeTypes type, String label) {
-        this.parent = parent;
         this.type = type;
         this.label = label;
     }
@@ -51,7 +48,16 @@ public abstract class ASTNode {
     }
 
     public void addChild(ASTNode node) {
+        node.parent = this;
         this.children.add(node);
+    }
+
+    public Token getLexeme() {
+        return this.lexeme;
+    }
+
+    public List<ASTNode> getChildren() {
+        return this.children;
     }
 
     public String print(ASTNode astNode) {

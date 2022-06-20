@@ -1,9 +1,6 @@
 package parser;
 
-import parser.ast.ASTNode;
-import parser.ast.ASTNodeTypes;
-import parser.ast.Expr;
-import parser.ast.Scalar;
+import parser.ast.*;
 import parser.utils.ParseException;
 import parser.utils.PeekTokenIterator;
 
@@ -18,22 +15,21 @@ public class SimpleParser {
     }
 
     // Expr -> digit + Expr
-    public static ASTNode parse(PeekTokenIterator iterator) throws ParseException {
+    public static ASTNode parse(PeekTokenIterator it) throws ParseException {
 
-        Expr expr = new Expr(null);
-        Scalar scalar = new Scalar(expr, iterator);
-        // 递归终止
-        if (!iterator.hasNext()) {
+        var expr = new Expr();
+        var scalar = Factor.parse(it);
+        // base condition
+        if (!it.hasNext()) {
             return scalar;
         }
 
-        expr.setLexeme(iterator.peek());
-        iterator.nextMatch("+");
+        expr.setLexeme(it.peek());
+        it.nextMatch("+");
         expr.setLabel("+");
-        // 添加左节点
         expr.addChild(scalar);
         expr.setType(ASTNodeTypes.BINARY_EXPR);
-        ASTNode rightNode = parse(iterator);
+        var rightNode = parse(it);
         expr.addChild(rightNode);
         return expr;
     }
