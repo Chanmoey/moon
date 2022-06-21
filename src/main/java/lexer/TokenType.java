@@ -9,8 +9,8 @@ public enum TokenType {
     VARIABLE,
     OPERATOR,
     BRACKET,
-    INTEGER,
     STRING,
+    INTEGER,
     FLOAT,
     BOOLEAN
 }

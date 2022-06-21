@@ -38,7 +38,7 @@ class LexerTest {
 
     @Test
     void test_function() throws LexicalException {
-        var source = "def sum(a, b) {" +
+        var source = "func sum(a, b) {" +
                 "print(a + b)" +
                 "}" +
                 "sum(100, 200)";
@@ -46,7 +46,7 @@ class LexerTest {
 
         var tokenList = lexer.analyse(source.chars().mapToObj(x -> (char) x));
 
-        assertToken(tokenList.get(0), "def", TokenType.KEYWORD);
+        assertToken(tokenList.get(0), "func", TokenType.KEYWORD);
         assertToken(tokenList.get(1), "sum", TokenType.VARIABLE);
         assertToken(tokenList.get(2), "(", TokenType.BRACKET);
         assertToken(tokenList.get(3), "a", TokenType.VARIABLE);

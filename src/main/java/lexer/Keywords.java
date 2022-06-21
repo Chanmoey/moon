@@ -2,28 +2,28 @@ package lexer;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 
 /**
  * @author Chanmoey
  * @date 2022年05月13日
  */
-public class KeyWords {
-
+public class Keywords {
     static String[] keywords = {
-            "moon",
+            "var",
             "if",
             "else",
             "for",
             "while",
             "break",
-            "def",
-            "return"
+            "func",
+            "return",
+            "int"
     };
 
-    static HashSet<String> set = new HashSet<>(List.of(keywords));
+    static HashSet<String> set = new HashSet<>(Arrays.asList(keywords));
 
-    public static boolean isKeyword(String word) {
+    // 判断读取的字符串是否为关键字词
+    public static boolean isKeyword(String word){
         return set.contains(word);
     }
 }

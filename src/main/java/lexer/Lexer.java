@@ -17,7 +17,7 @@ import java.util.stream.Stream;
  */
 public class Lexer {
 
-    public List<Token> analyse(PeekIterator<Character> it) throws LexicalException {
+    public ArrayList<Token> analyse(PeekIterator<Character> it) throws LexicalException {
         var tokens = new ArrayList<Token>();
 
         while (it.hasNext()) {
@@ -37,6 +37,7 @@ public class Lexer {
                 if (lookahead == '/') {
                     while (it.hasNext() && (c = it.next()) != '\n') {
                     }
+                    ;
                     continue;
                 } else if (lookahead == '*') {
                     it.next();//多读一个* 避免/*/通过
@@ -103,9 +104,18 @@ public class Lexer {
 
     public ArrayList<Token> analyse(Stream source) throws LexicalException {
         var it = new PeekIterator<Character>(source, (char) 0);
-        return (ArrayList<Token>) this.analyse(it);
+        return this.analyse(it);
     }
 
+    /**
+     * 从源代码文件加载并解析
+     *
+     * @param src
+     * @return
+     * @throws FileNotFoundException
+     * @throws UnsupportedEncodingException
+     * @throws LexicalException
+     */
     public static ArrayList<Token> fromFile(String src) throws FileNotFoundException, UnsupportedEncodingException, LexicalException {
         var file = new File(src);
         var fileStream = new FileInputStream(file);
@@ -113,6 +123,10 @@ public class Lexer {
 
         var br = new BufferedReader(inputStreamReader);
 
+
+        /**
+         * 利用BufferedReader每次读取一行
+         */
         var it = new Iterator<Character>() {
             private String line = null;
             private int cursor = 0;
@@ -148,6 +162,6 @@ public class Lexer {
         var peekIt = new PeekIterator<Character>(it, '\0');
 
         var lexer = new Lexer();
-        return (ArrayList<Token>) lexer.analyse(peekIt);
+        return lexer.analyse(peekIt);
     }
 }

@@ -6,6 +6,7 @@ import parser.ast.ASTNode;
 import parser.ast.Factor;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * @author Chanmoey
@@ -30,5 +31,20 @@ public class ParserUtils {
         } else {
             return StringUtils.join(prts, " ");
         }
+    }
+
+    public static String toBFSString(ASTNode root, int max) {
+
+        var queue = new LinkedList<ASTNode>();
+        var list = new ArrayList<String>();
+        queue.add(root);
+
+        int c = 0;
+        while (!queue.isEmpty() && c++ < max) {
+            var node = queue.poll();
+            list.add(node.getLabel());
+            queue.addAll(node.getChildren());
+        }
+        return StringUtils.join(list, " ");
     }
 }
